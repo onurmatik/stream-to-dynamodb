@@ -6,14 +6,6 @@ from settings import *
 from birdy.twitter import UserClient, StreamClient
 import boto3
 
-rest_client = UserClient(**TWITTER_APP)
-stream_client = StreamClient(**TWITTER_APP)
-response = rest_client.api.statuses.show.get(
-    id=801112676331991040
-)
-
-item = response.data
-
 user_ids = []
 for twitter_list in LISTS:
     print 'Fetching %s / %s' % twitter_list
