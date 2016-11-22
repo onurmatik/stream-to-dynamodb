@@ -85,6 +85,7 @@ for item in resource.stream():
                     'screen_name': item['retweeted_status']['user']['screen_name'],
                 }
             }
+            # update original tweets rt / fav counts
             table.update_item(
                 Key={
                     'user_id': item['retweeted_status']['user']['id_str'],
@@ -98,8 +99,8 @@ for item in resource.stream():
             )
         if 'coordinates' in item and item['coordinates'] and item['coordinates']['coordinates']:
             data['coordinates'] = [
-                Decimal(item['coordinates']['coordinates'][0]),
-                Decimal(item['coordinates']['coordinates'][1]),
+                Decimal(str(item['coordinates']['coordinates'][0])),
+                Decimal(str(item['coordinates']['coordinates'][1])),
             ]
         try:
             table.put_item(
