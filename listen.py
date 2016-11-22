@@ -8,6 +8,11 @@ import boto3
 
 rest_client = UserClient(**TWITTER_APP)
 stream_client = StreamClient(**TWITTER_APP)
+response = rest_client.api.statuses.show.get(
+    id=801112676331991040
+)
+
+item = response.data
 
 user_ids = []
 for twitter_list in LISTS:
@@ -50,12 +55,14 @@ for item in resource.stream():
             'timestamp': int(parse(item['created_at']).epoch),
             'text': item['text'],
             'lang': item['lang'],
-            'user': {
-                'name': item['user']['name'],
-                'profile_image_url': item['user']['profile_image_url'],
-                'screen_name': item['user']['screen_name'],
-            }
         }
+        user =  {
+            'profile_image_url': item['user']['profile_image_url'],
+            'screen_name': item['user']['screen_name'],
+        }
+        if 'name' in item['user']:
+            user['name'] = item['user']['name']
+        data['user'] = user
         if item['in_reply_to_screen_name']:
             data['in_reply_to_user'] = item['in_reply_to_screen_name']
         if item['in_reply_to_status_id_str']:
