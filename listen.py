@@ -34,6 +34,7 @@ dynamodb = boto3.resource(
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     endpoint_url=DYNAMODB_ENDPOINT,
 )
+
 table = dynamodb.Table(DYNAMODB_TABLE)
 
 resource = stream_client.stream.statuses.filter.post(
@@ -55,6 +56,10 @@ for item in resource.stream():
                 'screen_name': item['user']['screen_name'],
             }
         }
+        if item['in_reply_to_screen_name']:
+            data['in_reply_to_user'] = item['in_reply_to_screen_name']
+        if item['in_reply_to_status_id_str']:
+            data['in_reply_to'] = item['in_reply_to_status_id_str']
         if 'entities' in item:
             if 'hashtags' in item['entities'] and item['entities']['hashtags']:
                 data['hashtags'] = [h['text'] for h in item['entities']['hashtags']]
@@ -108,7 +113,7 @@ for item in resource.stream():
                 #ConditionExpression='attribute_not_exists',
             )
         except Exception, e:
-            print item
+            print data
             raise e
     elif 'delete' in item:
         table.update_item(
