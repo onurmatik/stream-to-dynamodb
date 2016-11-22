@@ -1,0 +1,23 @@
+"""
+Update and rename to `settings.py`
+Create an app to get your access token. Visit:
+https://apps.twitter.com
+"""
+
+# Follow.do / onurmatik
+TWITTER_APP = {
+    'consumer_key': '',
+    'consumer_secret': '',
+    'access_token': '',
+    'access_token_secret': '',
+}
+
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_REGION = 'us-east-1'
+DYNAMODB_ENDPOINT = 'https://dynamodb.%s.amazonaws.com' % AWS_REGION
+DYNAMODB_TABLE = 'twitter-tweets'
+
+LISTS = (
+    ('twitter-username', 'list-slug'),
+)
