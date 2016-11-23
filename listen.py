@@ -55,7 +55,7 @@ for item in resource.stream():
             'profile_image_url': item['user']['profile_image_url'],
             'screen_name': item['user']['screen_name'],
         }
-        if 'name' in item['user']:
+        if item['user']['name']:
             user['name'] = item['user']['name']
         data['user'] = user
         if item['in_reply_to_screen_name']:
