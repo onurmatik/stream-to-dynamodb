@@ -10,7 +10,7 @@ import boto3
 
 DYNAMODB_TABLE = 'tweets-gundemcocuk'
 
-stream_client = StreamClient(**TWITTER_APP)
+stream_client = StreamClient(**TWITTER_APP_SA)
 
 dynamodb = boto3.resource(
     'dynamodb',
@@ -23,7 +23,7 @@ dynamodb = boto3.resource(
 table = dynamodb.Table(DYNAMODB_TABLE)
 
 resource = stream_client.stream.statuses.filter.post(
-    follow='gundemcocuk',
+    follow='461049762',
     track='#GündemimizHepÇocuk,#GündemHepÇocuk,#GündemÇocuk,Gündem Çocuk'
           '#GundemimizHepCocuk,#GundemHepCocuk,#GundemCocuk,Gundem Cocuk',
 )
