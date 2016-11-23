@@ -6,6 +6,9 @@ from settings import *
 from birdy.twitter import UserClient, StreamClient
 import boto3
 
+rest_client = UserClient(**TWITTER_APP)
+stream_client = StreamClient(**TWITTER_APP)
+
 user_ids = []
 for twitter_list in LISTS:
     print 'Fetching %s / %s' % twitter_list
