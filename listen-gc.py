@@ -24,8 +24,8 @@ table = dynamodb.Table(DYNAMODB_TABLE)
 
 resource = stream_client.stream.statuses.filter.post(
     follow='461049762',
-    track='#GündemimizHepÇocuk,#GündemHepÇocuk,#GündemÇocuk,Gündem Çocuk'
-          '#GundemimizHepCocuk,#GundemHepCocuk,#GundemCocuk,Gundem Cocuk',
+    track='#GündemimizHepÇocuk,#GündemHepÇocuk,#GündemÇocuk,'
+          '#GundemimizHepCocuk,#GundemHepCocuk,#GundemCocuk',
 )
 
 for item in resource.stream():
