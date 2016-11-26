@@ -1,5 +1,3 @@
-#encoding:utf-8
-
 import json
 from decimal import Decimal
 from time import time
@@ -8,9 +6,26 @@ from settings import *
 from birdy.twitter import UserClient, StreamClient
 import boto3
 
-DYNAMODB_TABLE = 'tweets-gundemcocuk'
+rest_client = UserClient(**TWITTER_APP)
+stream_client = StreamClient(**TWITTER_APP)
 
-stream_client = StreamClient(**TWITTER_APP_SA)
+user_ids = []
+for twitter_list in LISTS:
+    print 'Fetching %s / %s' % twitter_list
+    owner_screen_name, slug = twitter_list
+    response = rest_client.api.lists.members.get(
+        owner_screen_name=owner_screen_name,
+        slug=slug,
+        count=5000,
+        include_entities=False,
+        skip_status=True,
+    )
+    users = [user['id_str'] for user in response.data['users']]
+    print 'Fetched %s members' % len(users)
+    user_ids += users
+
+user_ids = list(set(user_ids))
+print 'Fetched %s unique users' % len(user_ids)
 
 dynamodb = boto3.resource(
     'dynamodb',
@@ -23,9 +38,8 @@ dynamodb = boto3.resource(
 table = dynamodb.Table(DYNAMODB_TABLE)
 
 resource = stream_client.stream.statuses.filter.post(
-    follow='461049762',
-    track='#GündemimizHepÇocuk,#GündemHepÇocuk,#GündemÇocuk,'
-          '#GundemimizHepCocuk,#GundemHepCocuk,#GundemCocuk',
+    follow=','.join(user_ids),
+    stall_warnings=True,
 )
 
 for item in resource.stream():
