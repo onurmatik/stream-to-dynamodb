@@ -56,7 +56,7 @@ for item in resource.stream():
         }
         if item['user']['screen_name']:
             # yes there is a mysterious user with an empty screen name (id: 16953573)
-            user['screen_name'] = item['user']['screen_name'],
+            user['screen_name'] = item['user']['screen_name']
         if item['user']['name']:
             user['name'] = item['user']['name']
         data['user'] = user
