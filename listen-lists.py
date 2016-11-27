@@ -53,8 +53,10 @@ for item in resource.stream():
         }
         user =  {
             'profile_image_url': item['user']['profile_image_url'],
-            'screen_name': item['user']['screen_name'],
         }
+        if item['user']['screen_name']:
+            # yes there is a mysterious user with an empty screen name (id: 16953573)
+            'screen_name': item['user']['screen_name'],
         if item['user']['name']:
             user['name'] = item['user']['name']
         data['user'] = user
